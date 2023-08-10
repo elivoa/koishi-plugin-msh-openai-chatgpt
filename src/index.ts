@@ -1,8 +1,8 @@
 import { h, Context, Schema, Session } from 'koishi'
 import { Configuration, OpenAIApi } from 'openai';
-import {} from 'koishi-plugin-puppeteer'
+import { } from 'koishi-plugin-puppeteer'
 
-export const name = 'openai-chatgpt'
+export const name = 'msh-openai-chatgpt'
 
 export interface Config {
   apiKey: string
@@ -39,7 +39,7 @@ export async function apply(ctx: Context, config: Config) {
     apiKey: config.apiKey,
     basePath: config.apiAddress,
   });
-  
+
   const openai = new OpenAIApi(configuration);
 
   ctx.before('send', async (session) => {
@@ -54,7 +54,7 @@ export async function apply(ctx: Context, config: Config) {
           <strong class="me-auto">ChatGPT</strong>
         </div>
         <div class="toast-body">
-          ${ session.content.replace(/\n/g, '<br>').replace(/<\/*template>/g, '') }
+          ${session.content.replace(/\n/g, '<br>').replace(/<\/*template>/g, '')}
         </div>
       </div>
       <script>
@@ -66,8 +66,14 @@ export async function apply(ctx: Context, config: Config) {
       session.content = await ctx.puppeteer.render(html);
     }
   })
-  ctx.command(config.triggerWord + ' <message:text>').action(async ({ session }, message) => {
-    const q = message;
+
+  ctx.on('message', async (session) => {
+    const q = session.content;
+    session.send('我是复读机4：' + session.content)
+    // if (session.content === '天王盖地虎') {
+    //   session.send('宝塔镇河妖')
+    // }
+
     session.send("查询中，请耐心等待...");
     try {
       const completion = await openai.createChatCompletion({
@@ -90,5 +96,32 @@ export async function apply(ctx: Context, config: Config) {
       }
       return config.errorMessage;
     }
+
   })
+
+  // ctx.command('chat <message:text>').action(async ({ session }, message) => {
+  //   const q = message;
+  //   session.send("查询中，请耐心等待...");
+  //   try {
+  //     const completion = await openai.createChatCompletion({
+  //       model: config.model,
+  //       messages: [{ "role": "user", 'content': q }],
+  //       temperature: config.temperature,
+  //       max_tokens: config.maxTokens,
+  //       top_p: config.topP,
+  //       frequency_penalty: config.frequencyPenalty,
+  //       presence_penalty: config.presencePenalty,
+  //       stop: config.stop,
+  //     });
+  //     return completion.data.choices[0].message.content;
+  //   } catch (error) {
+  //     if (error.response) {
+  //       console.log(error.response.status);
+  //       console.log(error.response.data);
+  //     } else {
+  //       console.log(error.message);
+  //     }
+  //     return config.errorMessage;
+  //   }
+  // })
 }
