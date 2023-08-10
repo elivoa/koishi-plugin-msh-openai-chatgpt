@@ -1,8 +1,8 @@
 {
   "name": "koishi-plugin-msh-openai-chatgpt",
-  "author": "Sky390",
-  "version": "1.2.3",
-  "description": "A ChatGPT robot that calls the official API and supports agents.",
+  "author": "elivoa",
+  "version": "1.3.1",
+  "description": "A ChatGPT robot that calls the official API and supports agents. without chat!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/elivoa/koishi-plugin-msh-openai-chatgpt"
