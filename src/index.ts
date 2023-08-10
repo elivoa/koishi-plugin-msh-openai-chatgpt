@@ -122,37 +122,25 @@ export async function apply(ctx: Context, config: Config) {
       }
       return config.errorMessage;
     }
-
-    // return next()
-    return 'TODO 解开我' + session.content
   })
 
-
-  // ctx.command('chat <message:text>').action(async ({ session }, message) => {
-  //   console.log(".........debug on chat:", message);
-  //   const q = message;
-  //   session.send("命中了啥奇怪的东西？" + q);
-  //   // session.send("查询中，请耐心等待...");
-  //   //   try {
-  //   //     const completion = await openai.createChatCompletion({
-  //   //       model: config.model,
-  //   //       messages: [{ "role": "user", 'content': q }],
-  //   //       temperature: config.temperature,
-  //   //       max_tokens: config.maxTokens,
-  //   //       top_p: config.topP,
-  //   //       frequency_penalty: config.frequencyPenalty,
-  //   //       presence_penalty: config.presencePenalty,
-  //   //       stop: config.stop,
-  //   //     });
-  //   //     return completion.data.choices[0].message.content;
-  //   //   } catch (error) {
-  //   //     if (error.response) {
-  //   //       console.log(error.response.status);
-  //   //       console.log(error.response.data);
-  //   //     } else {
-  //   //       console.log(error.message);
-  //   //     }
-  //   //     return config.errorMessage;
-  //   //   }
-  // })
+  ctx.command(config.triggerWord + ' <message:text>').action(async ({ session }, message) => {
+    const q = message;
+    session.send("查询中，请耐心等待...");
+    try {
+      const completion = await openai.createChatCompletion({
+        model: config.model,
+        messages: [{ "role": "user", 'content': q }]
+      });
+      //console.log(completion);
+      return completion.data.choices[0].message.content;
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.status);
+        console.log(error.response.data);
+      } else {
+        console.log(error.message);
+      }
+    }
+  })
 }
