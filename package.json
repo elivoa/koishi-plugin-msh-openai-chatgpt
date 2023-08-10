@@ -1,6 +1,6 @@
 {
-  "name": "koishi-plugin-msh-openai-chatgpt",
-  "author": "Sky390",
+  "name": "koishi-plugin-msh-chatgpt",
+  "author": "elivoa",
   "version": "1.2.3",
   "description": "A ChatGPT robot that calls the official API and supports agents.",
   "repository": {
@@ -30,7 +30,7 @@
     "browser": true,
     "description": {
       "en": "A ChatGPT robot that calls the official API and supports agents.",
-      "zh": "一个调用官方 API 的 ChatGPT 机器人，支持代理。"
+      "zh": "一个调用官方 API 的 ChatGPT 机器人，支持代理。 修改：无需chat触发"
     }
   },
   "dependencies": {
