@@ -23,7 +23,7 @@ export const Config: Schema<Config> = Schema.object({
   apiKey: Schema.string().required().description("OpenAI API Key: https://platform.openai.com/account/api-keys"),
   apiAddress: Schema.string().required().default("https://api.openai.com/v1").description("API 请求地址。"),
   triggerWord: Schema.string().default("chat").description("触发机器人回答的关键词。"),
-  model: Schema.union(['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'MSH-L-cont']).default('gpt-3.5-turbo'),
+  model: Schema.union(['gpt-3.5-turbo', 'gpt-3.5-turbo-0301', 'msh-l-0817-stable']).default('gpt-3.5-turbo'),
   temperature: Schema.number().default(1).description("温度，更高的值意味着模型将承担更多的风险。对于更有创造性的应用，可以尝试 0.9，而对于有明确答案的应用，可以尝试 0（argmax 采样）。"),
   maxTokens: Schema.number().default(100).description("生成的最大令牌数。"),
   topP: Schema.number().default(1),
