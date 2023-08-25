@@ -5,6 +5,7 @@ import { } from 'koishi-plugin-puppeteer'
 export const name = 'msh-openai-chatgpt'
 
 export interface Config {
+  name: string
   apiKey: string
   apiAddress: string
   model: string
@@ -20,6 +21,7 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
+  name: Schema.string().required().default('kimi').description("默认名字：@我才能生效"),
   apiKey: Schema.string().required().description("OpenAI API Key: https://platform.openai.com/account/api-keys"),
   apiAddress: Schema.string().required().default("https://api.openai.com/v1").description("API 请求地址。"),
   triggerWord: Schema.string().default("chat").description("触发机器人回答的关键词。"),
@@ -100,7 +102,20 @@ export async function apply(ctx: Context, config: Config) {
   // })
 
   ctx.middleware(async (session, next) => {
+
     console.log("some body asks: ", session.content);
+
+    // 1. 判断有没有 @kimi(config.name)
+    const name = config.name || 'kimi';
+    const atme = session.elements?.find((item) => item?.type == 'at' && name == item?.attrs?.name?.toLowerCase());
+    if (!atme) {
+      return next();
+    }
+
+    // 2. do the right things.
+
+    // console.log("DEBUG： ", session.elements);
+    // console.log("\nconfig is  ", config);
     session.send("查询中，请耐心等待...");
     try {
       const completion = await openai.createChatCompletion({
