@@ -4,6 +4,8 @@
 
 A ChatGPT robot that calls the official API and supports agents.
 
+```shell
 cd koishi-app
 yarn build chatmsh
-npm pub chatmsh
+npm run pub chatmsh
+```
